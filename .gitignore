@@ -7,6 +7,9 @@ __pycache__
 *.egg-info
 *.idea
 resource/
+arn.txt
+email_content.txt
+email_address.txt
 # CDK asset staging directory
 .cdk.staging
 cdk.out

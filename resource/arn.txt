@@ -1,0 +1,1 @@
+arn:aws:ses:eu-north-1:916886530732:identity/rapanosul69@gmail.com
