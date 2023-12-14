@@ -2,9 +2,9 @@
 import os
 
 import aws_cdk as cdk
-from dailymail.dailymail_stack import DailymailStackTest
+from dailymail.dailymail_stack import DailymailStack
 
 
 app = cdk.App()
-DailymailStackTest(app, "DailymailStackTest")
+DailymailStack(app, "DailymailStack")
 app.synth()
