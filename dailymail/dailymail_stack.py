@@ -8,6 +8,7 @@ from aws_cdk import (
     aws_iam as iam,
     aws_s3,
     aws_s3_deployment,
+    CfnParameter,
 )
 from constructs import Construct
 
@@ -16,7 +17,7 @@ class DailymailStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
-
+        email = CfnParameter(self, "email", type="string", description="email address")
         scheduled_lambda = lambda_.Function(self, "MyDailyMail",
                                             handler='lambda_function.lambda_handler',
                                             runtime=lambda_.Runtime.PYTHON_3_8,
@@ -30,7 +31,7 @@ class DailymailStack(Stack):
                                                         )
 
         scheduled_lambda.add_to_role_policy(iam.PolicyStatement(effect=iam.Effect.ALLOW,
-                                                                resources=["arn:aws:ses:region:id:identity/email@domain.com"],
+                                                                resources=[f"arn:aws:ses:eu-north-1:916886530732:identity/{email}"],
                                                                 actions=["ses:SendEmail", "ses:SendRawEmail",
                                                                          "ses:SendTemplatedEmail",
                                                                          ]
@@ -41,5 +42,5 @@ class DailymailStack(Stack):
         rule = events.Rule(self, "Rule", schedule=events.Schedule.rate(Duration.hours(24)))
 
         rule.add_target(aws_events_targets.LambdaFunction(scheduled_lambda, event=events.RuleTargetInput.from_object(
-            {"bucket": "testbucketcdk1241210", "address": "email_address.txt", "content": "email_content.txt",
+            {"bucket": "testbucketcdk1241210", "address": f"{email}", "content": "email_content.txt",
              "arn": "arn.txt"}), retry_attempts=1))
