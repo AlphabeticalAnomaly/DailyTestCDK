@@ -26,7 +26,7 @@ class DailymailStack(Stack):
         bucket = aws_s3.Bucket(self, "TestBucket", bucket_name="testbucketcdk1241210",)
         bucket.grant_read(scheduled_lambda)
         deployment = aws_s3_deployment.BucketDeployment(self, "TestDeployment",
-                                                        sources=[aws_s3_deployment.Source.asset(path="DailyMail/resource")],
+                                                        sources=[aws_s3_deployment.Source.asset(path="./resource")],
                                                         destination_bucket=bucket,
                                                         )
 
