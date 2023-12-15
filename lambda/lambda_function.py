@@ -1,19 +1,14 @@
 import boto3
+from decode_function import object_body_to_str
 ses = boto3.client('ses')
-s3 = boto3.client('s3')
 
 
 def lambda_handler(event, context):
     bucket = event["bucket"]
     address = event["address"]
     content = event["content"]
-    response_address = s3.get_object(Bucket=bucket, Key=address)
-    address_data = response_address['Body'].read()
-    address_str = address_data.decode('utf-8')
-    response_content = s3.get_object(Bucket=bucket, Key=content)
-    content_data = response_content['Body'].read()
-    content_str = content_data.decode('utf-8')
-
+    address_str = object_body_to_str(bucket_name=bucket, object_key=address)
+    content_str = object_body_to_str(bucket_name=bucket, object_key=content)
     mail = ses.send_email(Destination={
         'ToAddresses': [address_str]
     },

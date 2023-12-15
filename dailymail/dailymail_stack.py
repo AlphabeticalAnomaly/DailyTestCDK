@@ -26,7 +26,7 @@ class DailymailStack(Stack):
         bucket = aws_s3.Bucket(self, "TestBucket", bucket_name="testbucketcdk1241210",)
         bucket.grant_read(scheduled_lambda)
         deployment = aws_s3_deployment.BucketDeployment(self, "TestDeployment",
-                                                        sources=[aws_s3_deployment.Source.asset(path="../DAILYMAIL/resource")],
+                                                        sources=[aws_s3_deployment.Source.asset(path="DailyMail/resource")],
                                                         destination_bucket=bucket,
                                                         )
 
@@ -42,5 +42,4 @@ class DailymailStack(Stack):
         rule = events.Rule(self, "Rule", schedule=events.Schedule.rate(Duration.hours(24)))
 
         rule.add_target(aws_events_targets.LambdaFunction(scheduled_lambda, event=events.RuleTargetInput.from_object(
-            {"bucket": "testbucketcdk1241210", "address": f"{email}", "content": "email_content.txt",
-             "arn": "arn.txt"}), retry_attempts=1))
+            {"bucket": bucket.bucket_name, "address": f"{email}", "content": "email_content.txt"}), retry_attempts=1))
