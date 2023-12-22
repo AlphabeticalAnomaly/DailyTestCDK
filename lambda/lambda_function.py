@@ -4,9 +4,9 @@ from mail_client import MailService
 
 
 def lambda_handler(event, context):
-    event_reader = EventReader(event)
+    event_reader = EventReader()
     bucket_reader = BucketReader()
     mail_sender = MailService()
-    address_str = bucket_reader.read_object_content(event_reader.get_object(key="address"))
-    content_str = bucket_reader.read_object_content(event_reader.get_object(key="content"))
+    address_str = bucket_reader.read_object_content(event_reader.get_object(event=event, key="address"))
+    content_str = bucket_reader.read_object_content(event_reader.get_object(event=event, key="content"))
     mail_sender.send_mail(source_address=address_str, destination_address=address_str, content=content_str)

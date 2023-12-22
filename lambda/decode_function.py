@@ -2,7 +2,7 @@ import boto3
 from abc import ABC, abstractmethod
 
 
-class Decoder(ABC, boto3):
+class IBucketReader(ABC):
     @abstractmethod
     def __init__(self):
         pass
@@ -12,9 +12,8 @@ class Decoder(ABC, boto3):
         pass
 
 
-class BucketReader(Decoder, boto3):
+class BucketReader(IBucketReader):
     def __init__(self):
-        super().__init__()
         self.s3 = boto3.client("s3")
 
     def read_object_content(self, params=dict):

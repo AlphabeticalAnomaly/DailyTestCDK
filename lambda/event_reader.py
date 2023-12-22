@@ -1,22 +1,21 @@
 from abc import ABC, abstractmethod
 
 
-class Reader(ABC):
+class IEventReader(ABC):
     @abstractmethod
-    def __init__(self, event):
+    def __init__(self):
         pass
 
     @abstractmethod
-    def get_object(self, key=str):
+    def get_object(self, event, key=str):
         pass
 
 
-class EventReader(Reader):
-    def __init__(self, event):
-        self.event = event
+class EventReader(IEventReader):
+    def __init__(self):
 
-    def get_object(self, key=str):
-        bucket = self.event["bucket"]
+    def get_object(self, event, key=str):
+        bucket = event["bucket"]
         bucket_object = bucket[key]
         return {"bucket_name": bucket, "bucket_object": bucket_object}
 

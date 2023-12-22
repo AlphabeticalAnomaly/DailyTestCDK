@@ -2,7 +2,7 @@ import boto3
 from abc import ABC, abstractmethod
 
 
-class Mail(ABC, boto3):
+class IMailService(ABC):
     @abstractmethod
     def __init__(self):
         pass
@@ -12,7 +12,7 @@ class Mail(ABC, boto3):
         pass
 
 
-class MailService(Mail, boto3):
+class MailService(IMailService):
     def __init__(self):
         self.client = boto3.client('ses')
 
