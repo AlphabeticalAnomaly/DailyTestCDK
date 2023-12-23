@@ -5,10 +5,6 @@ from dependency_injector.wiring import inject, Provide
 
 class IBucketReader(ABC):
     @abstractmethod
-    def __init__(self, boto3_client):
-        pass
-
-    @abstractmethod
     def read_object_content(self, bucket=object, object_key=str):
         pass
 

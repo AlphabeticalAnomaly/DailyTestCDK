@@ -4,9 +4,6 @@ from dependency_injector.wiring import inject, Provide
 
 
 class IMailService(ABC):
-    @abstractmethod
-    def __init__(self, boto3_client):
-        pass
 
     @abstractmethod
     def send_mail(self, source_address=str, destination_address=str, content=str):
