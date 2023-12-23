@@ -1,10 +1,11 @@
-import boto3
 from abc import ABC, abstractmethod
+from containers import Container
+from dependency_injector.wiring import inject, Provide
 
 
 class IBucketReader(ABC):
     @abstractmethod
-    def __init__(self):
+    def __init__(self, boto3_client):
         pass
 
     @abstractmethod
@@ -13,8 +14,9 @@ class IBucketReader(ABC):
 
 
 class BucketReader(IBucketReader):
-    def __init__(self):
-        self.s3 = boto3.client("s3")
+    @inject
+    def __init__(self, boto3_client=Provide[Container.boto3_client_s3]):
+        self.s3 = boto3_client
 
     def read_object_content(self, bucket=object, object_key=str):
         bucket_object = self.s3.get_object(Bucket=bucket, Key=object_key)

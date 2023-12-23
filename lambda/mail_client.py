@@ -1,10 +1,11 @@
-import boto3
 from abc import ABC, abstractmethod
+from containers import Container
+from dependency_injector.wiring import inject, Provide
 
 
 class IMailService(ABC):
     @abstractmethod
-    def __init__(self):
+    def __init__(self, boto3_client):
         pass
 
     @abstractmethod
@@ -13,8 +14,9 @@ class IMailService(ABC):
 
 
 class MailService(IMailService):
-    def __init__(self):
-        self.client = boto3.client('ses')
+    @inject
+    def __init__(self, boto3_client=Provide[Container.boto3_client_ses]):
+        self.client = boto3_client
 
     def send_mail(self, source_address=str, destination_address=str, content=str):
         self.client.send_mail(Destination={
