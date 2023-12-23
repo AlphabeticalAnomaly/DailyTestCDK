@@ -15,7 +15,7 @@ class IBucketReader(ABC):
 
 class BucketReader(IBucketReader):
     @inject
-    def __init__(self, boto3_client=Provide[Container.boto3_client_s3]):
+    def __init__(self, boto3_client=Provide[Container.s3_client]):
         self.s3 = boto3_client
 
     def read_object_content(self, bucket=object, object_key=str):

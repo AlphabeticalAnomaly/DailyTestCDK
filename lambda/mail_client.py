@@ -15,7 +15,7 @@ class IMailService(ABC):
 
 class MailService(IMailService):
     @inject
-    def __init__(self, boto3_client=Provide[Container.boto3_client_ses]):
+    def __init__(self, boto3_client=Provide[Container.ses_client]):
         self.client = boto3_client
 
     def send_mail(self, source_address=str, destination_address=str, content=str):
