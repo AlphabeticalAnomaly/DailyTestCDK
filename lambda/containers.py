@@ -4,7 +4,7 @@ import boto3.session
 
 class Container(containers.DeclarativeContainer):
 
-    # wiring_config = containers.WiringConfiguration(modules=["decode_function.py", "mail_client.py"])
+    wiring_config = containers.WiringConfiguration(modules=["decode_function.py", "mail_client.py"])
 
     session = providers.Resource(
         boto3.session.Session

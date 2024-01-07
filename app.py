@@ -6,5 +6,5 @@ from dailymail.dailymail_stack import DailymailStack
 
 
 app = cdk.App()
-DailymailStack(app, "DailymailStack")
+DailymailStack(app, "DailymailStack01")
 app.synth()
