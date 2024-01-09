@@ -19,7 +19,7 @@ def test_synthesizes_properly():
     template.has_resource_properties(
         "AWS::Lambda::Permission",
         {
-            "Action": "lambda:InvokeFunction",
+            "Action": "lambda_code:InvokeFunction",
             "Principal": "events.amazonaws.com"
         }
     )
@@ -54,5 +54,4 @@ def test_synthesizes_properly():
             "State": "ENABLED"
         }
     )
-
 

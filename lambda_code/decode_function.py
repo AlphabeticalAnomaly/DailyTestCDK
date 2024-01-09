@@ -39,3 +39,7 @@ class BucketReader(IBucketReader):
 
         finally:
             return self.object_str
+
+
+
+
