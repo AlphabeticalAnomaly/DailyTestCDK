@@ -13,7 +13,7 @@ from aws_cdk import (
 from constructs import Construct
 
 
-class DailymailStack(Stack):
+class DailymailStack03(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -21,9 +21,9 @@ class DailymailStack(Stack):
         scheduled_lambda = lambda_.Function(self, "MyDailyMail",
                                             handler='lambda_function.lambda_handler',
                                             runtime=lambda_.Runtime.PYTHON_3_8,
-                                            code=lambda_.Code.from_asset('lambda'),
+                                            code=lambda_.Code.from_asset('lambda_code'),
                                             )
-        bucket = aws_s3.Bucket(self, "TestBucket", bucket_name="testbucketcdk1241210",)
+        bucket = aws_s3.Bucket(self, "TestBucket", bucket_name="testbucketcdk1241212",)
         bucket.grant_read(scheduled_lambda)
         deployment = aws_s3_deployment.BucketDeployment(self, "TestDeployment",
                                                         sources=[aws_s3_deployment.Source.asset(path="../DAILYMAIL/resource")],
@@ -39,7 +39,7 @@ class DailymailStack(Stack):
         principal = iam.ServicePrincipal("events.amazonaws.com")
         scheduled_lambda.grant_invoke(principal)
 
-        rule = events.Rule(self, "Rule", schedule=events.Schedule.rate(Duration.minutes(1)))
+        rule = events.Rule(self, "Rule", schedule=events.Schedule.rate(Duration.hours(24)))
 
         rule.add_target(aws_events_targets.LambdaFunction(scheduled_lambda, event=events.RuleTargetInput.from_object(
-            {"bucket": bucket.bucket_name, "address": f"{email}", "content": "email_content.txt"}), retry_attempts=1))
+            {"bucket": "testbucketcdk1241212", "address": email, "content": "email_content.txt"}), retry_attempts=1))
