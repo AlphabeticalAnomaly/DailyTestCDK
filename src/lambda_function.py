@@ -1,6 +1,5 @@
-from src.decode_function import BucketReader
-from src.mail_client import MailService
-import sys
+from decode_function import BucketReader
+from mail_client import MailService
 
 
 def read(bucket, object_key):

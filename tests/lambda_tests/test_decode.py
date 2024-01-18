@@ -3,7 +3,7 @@ from src.decode_function import BucketReader, BucketReaderError
 from unittest.mock import Mock
 
 
-class TestSomething(unittest.TestCase):
+class TestBucketReader(unittest.TestCase):
     def setUp(self):
         self.mock_client = Mock()
         self.bucket_reader = BucketReader(self.mock_client)

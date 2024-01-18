@@ -19,7 +19,7 @@ def test_synthesizes_properly():
     template.has_resource_properties(
         "AWS::Lambda::Permission",
         {
-            "Action": "lambda_code:InvokeFunction",
+            "Action": "src:InvokeFunction",
             "Principal": "events.amazonaws.com"
         }
     )
@@ -36,16 +36,16 @@ def test_synthesizes_properly():
         }
     )
 
-    # template.has_parameter(
-    #     "TestBucket560B80BC",
-    #     {
-    #         "type": "AWS::S3::Bucket",
-    #         "Properties":
-    #             {
-    #               "BucketName": "testbucketcdk1241210"
-    #             }
-    #     }
-    # )
+    template.has_parameter(
+        "TestBucket560B80BC",
+        {
+            "type": "AWS::S3::Bucket",
+            "Properties":
+                {
+                  "BucketName": "testbucketcdk1241210"
+                }
+        }
+    )
 
     template.has_resource_properties(
         "AWS::Events::Rule",

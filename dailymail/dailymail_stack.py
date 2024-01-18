@@ -13,7 +13,7 @@ from aws_cdk import (
 from constructs import Construct
 
 
-class DailymailStack03(Stack):
+class DailymailStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -23,7 +23,7 @@ class DailymailStack03(Stack):
                                             runtime=lambda_.Runtime.PYTHON_3_8,
                                             code=lambda_.Code.from_asset(path="src"),
                                             )
-        bucket = aws_s3.Bucket(self, "TestBucket", bucket_name="testbucketcdk1241212",)
+        bucket = aws_s3.Bucket(self, "TestBucket", bucket_name="testbucketcdk1241210",)
         bucket.grant_read(scheduled_lambda)
         deployment = aws_s3_deployment.BucketDeployment(self, "TestDeployment",
                                                         sources=[aws_s3_deployment.Source.asset(path="resource")],

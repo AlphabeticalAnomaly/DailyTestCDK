@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import Mock, patch
-from src.lambda_function import read, mail, lambda_handler
+from src.lambda_function import lambda_handler
 
 
 class TestHandler(unittest.TestCase):

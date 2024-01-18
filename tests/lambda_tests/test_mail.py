@@ -3,7 +3,7 @@ from src.mail_client import MailService, MailServiceError
 from unittest.mock import Mock
 
 
-class TestMail(unittest.TestCase):
+class TestMailService(unittest.TestCase):
     def setUp(self):
         self.client = Mock()
         self.Mail = MailService(client=self.client)
