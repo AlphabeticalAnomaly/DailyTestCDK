@@ -15,8 +15,8 @@ class IBucketReader(ABC):
 
 
 class BucketReader(IBucketReader):
-    def __init__(self, session=boto3.session.Session()):
-        self.s3 = session.client(service_name='s3', region_name='eu-north-1')
+    def __init__(self, client=boto3.client('s3')):
+        self.s3 = client
 
     def read_object_content(self, bucket=str, object_key=str):
         bucket_object = self.__read_bucket_object(bucket, object_key)

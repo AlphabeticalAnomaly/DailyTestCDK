@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import boto3.session
+import boto3
 
 
 class MailServiceError(Exception):
@@ -17,8 +18,8 @@ class IMailService(ABC):
 
 class MailService(IMailService):
 
-    def __init__(self, session=boto3.session.Session()):
-        self.client = session.client(service_name='ses', region_name='eu-north-1')
+    def __init__(self, client=boto3.client('ses', 'eu-north-1')):
+        self.client = client
 
     def send_email(self, source_address=str, destination_address=str, content=str):
         self.__send_email(source_address=source_address, destination_address=destination_address, content=content)

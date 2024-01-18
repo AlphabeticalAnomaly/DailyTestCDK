@@ -1,13 +1,12 @@
 import unittest
-from lambda_code.decode_function import BucketReader, BucketReaderError
+from src.decode_function import BucketReader, BucketReaderError
 from unittest.mock import Mock
 
 
 class TestSomething(unittest.TestCase):
     def setUp(self):
-        self.mock_session = Mock()
-        self.bucket_reader = BucketReader(self.mock_session)
-        self.bucket_reader.s3 = Mock()
+        self.mock_client = Mock()
+        self.bucket_reader = BucketReader(self.mock_client)
         self.object_content = Mock()
         self.object_data = Mock()
         self.object_content.read.return_value = bytes('content', 'utf-8')

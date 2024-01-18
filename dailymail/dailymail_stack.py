@@ -21,12 +21,12 @@ class DailymailStack03(Stack):
         scheduled_lambda = lambda_.Function(self, "MyDailyMail",
                                             handler='lambda_function.lambda_handler',
                                             runtime=lambda_.Runtime.PYTHON_3_8,
-                                            code=lambda_.Code.from_asset('lambda_code'),
+                                            code=lambda_.Code.from_asset(path="src"),
                                             )
         bucket = aws_s3.Bucket(self, "TestBucket", bucket_name="testbucketcdk1241212",)
         bucket.grant_read(scheduled_lambda)
         deployment = aws_s3_deployment.BucketDeployment(self, "TestDeployment",
-                                                        sources=[aws_s3_deployment.Source.asset(path="../DAILYMAIL/resource")],
+                                                        sources=[aws_s3_deployment.Source.asset(path="resource")],
                                                         destination_bucket=bucket,
                                                         )
 
