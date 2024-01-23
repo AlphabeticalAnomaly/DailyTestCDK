@@ -1,6 +1,5 @@
 import aws_cdk as core
 import aws_cdk.assertions as assertions
-import pytest
 from dailymail.dailymail_stack import DailymailStack
 
 
@@ -20,7 +19,7 @@ def test_synthesizes_properly():
     template.has_resource_properties(
         "AWS::Lambda::Permission",
         {
-            "Action": "lambda:InvokeFunction",
+            "Action": "src:InvokeFunction",
             "Principal": "events.amazonaws.com"
         }
     )
@@ -55,5 +54,4 @@ def test_synthesizes_properly():
             "State": "ENABLED"
         }
     )
-
 
