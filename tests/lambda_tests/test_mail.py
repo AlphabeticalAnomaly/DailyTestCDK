@@ -12,7 +12,7 @@ class TestMailService(unittest.TestCase):
         self.Mail.send_email(destination_address="test_address", source_address="test_source", content="test_content")
         self.Mail.client.send_email.assert_called_once_with(Destination={'ToAddresses': ['test_address']}, Message={'Body': {'Text': {'Charset': 'UTF-8', 'Data': 'test_content'}}, 'Subject': {'Charset': 'UTF-8', 'Data': 'Test email'}}, Source='test_source')
 
-    def test_email_exception(self):
+    def test_email_exception_handling(self):
         self.Mail = MailService(client=self.client)
         expected_exception = Exception('exception')
         self.Mail.client.send_email.side_effect = expected_exception

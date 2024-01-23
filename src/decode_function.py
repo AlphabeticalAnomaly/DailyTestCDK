@@ -3,9 +3,9 @@ import boto3.session
 
 
 class BucketReaderError(Exception):
-    def __init__(self, error, exp):
-        self.error = error
-        self.cause = exp
+    def __init__(self, message, cause):
+        self.error = message
+        self.cause = cause
 
 
 class IBucketReader(ABC):
@@ -27,21 +27,16 @@ class BucketReader(IBucketReader):
         try:
             return self.s3.get_object(Bucket=bucket, Key=object_key)
         except Exception as e:
-            raise BucketReaderError(error="An error occurred when trying to access the content.", exp=e)
+            raise BucketReaderError(message="An error occurred when trying to access the content.", cause=e)
 
     def __read_object_data(self, bucket_object):
         try:
             return bucket_object['Body'].read()
         except Exception as e:
-            raise BucketReaderError(error="An error occurred when trying to access the object's contents.", exp=e)
+            raise BucketReaderError(message="An error occurred when trying to access the object's contents.", cause=e)
 
     def __decode_object_data(self, object_data):
         try:
             return object_data.decode('utf-8')
         except Exception as e:
-            raise BucketReaderError(error='An error occurred when trying to decode the content.', exp=e)
-
-
-
-
-
+            raise BucketReaderError(message='An error occurred when trying to decode the content.', cause=e)

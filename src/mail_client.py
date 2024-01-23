@@ -4,9 +4,9 @@ import boto3
 
 
 class MailServiceError(Exception):
-    def __init__(self, error, exp):
-        self.error = error
-        self.cause = exp
+    def __init__(self, message, cause):
+        self.error = message
+        self.cause = cause
 
 
 class IMailService(ABC):
@@ -22,9 +22,6 @@ class MailService(IMailService):
         self.client = client
 
     def send_email(self, source_address=str, destination_address=str, content=str):
-        self.__send_email(source_address=source_address, destination_address=destination_address, content=content)
-
-    def __send_email(self, source_address, destination_address, content):
         try:
             self.client.send_email(Destination={
                 'ToAddresses': [destination_address]
@@ -45,7 +42,7 @@ class MailService(IMailService):
                 Source=source_address
             )
         except Exception as e:
-            raise MailServiceError(error="An error occurred when mail client was called.", exp=e)
+            raise MailServiceError(message="An error occurred when mail client was called.", cause=e)
 
 
 
