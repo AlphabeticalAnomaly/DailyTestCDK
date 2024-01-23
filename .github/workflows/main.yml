@@ -10,6 +10,8 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        repository: AlphabeticalAnomaly/DailyTestCDK
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -20,7 +22,7 @@ jobs:
 
     - name: AWS login
       id: login-ecr
-      uses: aws-actions/aws-login@v1
+      uses: aws-actions/amazon-ecr-login@v1
 
     - name: Deployment
       id: cdk-deploy
