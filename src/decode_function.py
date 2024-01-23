@@ -4,7 +4,7 @@ import boto3.session
 
 class BucketReaderError(Exception):
     def __init__(self, message, cause):
-        self.error = message
+        self.message = message
         self.cause = cause
 
 

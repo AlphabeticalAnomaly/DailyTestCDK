@@ -22,7 +22,7 @@ class TestBucketReader(unittest.TestCase):
         self.bucket_reader.s3.get_object.side_effect = expected_exception
         with self.assertRaises(BucketReaderError) as context:
             self.bucket_reader.read_object_content(bucket="bucket", object_key="key")
-        self.assertEqual('An error occurred when trying to access the content.', context.exception.error)
+        self.assertEqual('An error occurred when trying to access the content.', context.exception.message)
         self.assertEqual(expected_exception, context.exception.cause)
 
     def test_read_exception_handling(self):
@@ -31,7 +31,7 @@ class TestBucketReader(unittest.TestCase):
         self.bucket_reader.s3.get_object.return_value = self.dictionary
         with self.assertRaises(BucketReaderError) as context:
             self.bucket_reader.read_object_content(bucket="bucket", object_key="key")
-        self.assertEqual("An error occurred when trying to access the object's contents.", context.exception.error)
+        self.assertEqual("An error occurred when trying to access the object's contents.", context.exception.message)
         self.assertEqual(expected_exception, context.exception.cause)
 
     def test_decode_exception_handling(self):
@@ -41,5 +41,5 @@ class TestBucketReader(unittest.TestCase):
         self.bucket_reader.s3.get_object.return_value = self.dictionary
         with self.assertRaises(BucketReaderError) as context:
             self.bucket_reader.read_object_content(bucket="bucket", object_key="key")
-        self.assertEqual('An error occurred when trying to decode the content.', context.exception.error)
+        self.assertEqual('An error occurred when trying to decode the content.', context.exception.message)
         self.assertEqual(expected_exception, context.exception.cause)

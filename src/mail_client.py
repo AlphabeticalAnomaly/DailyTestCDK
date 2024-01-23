@@ -5,7 +5,7 @@ import boto3
 
 class MailServiceError(Exception):
     def __init__(self, message, cause):
-        self.error = message
+        self.message = message
         self.cause = cause
 
 

@@ -18,7 +18,7 @@ class TestMailService(unittest.TestCase):
         self.Mail.client.send_email.side_effect = expected_exception
         with self.assertRaises(MailServiceError) as context:
             self.Mail.send_email(destination_address="test_address", source_address="test_source", content="test_content")
-        self.assertEqual('An error occurred when mail client was called.', context.exception.error)
+        self.assertEqual('An error occurred when mail client was called.', context.exception.message)
 
 
 
