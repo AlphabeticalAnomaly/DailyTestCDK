@@ -20,7 +20,7 @@ jobs:
 
     - name: AWS login
       id: login-ecr
-      uses: aws-actions/aws-ecr-login@v1
+      uses: aws-actions/aws-login@v1
 
     - name: Deployment
       id: cdk-deploy
