@@ -13,7 +13,7 @@ jobs:
         run: npm cache clean --force
       - name: Install dependencies
         run: npm install
-        file: ./package-lock.json
+        uses: ./package-lock.json
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
