@@ -9,6 +9,7 @@ from aws_cdk import (
     aws_s3,
     aws_s3_deployment,
     CfnParameter,
+    aws_ses,
 )
 from constructs import Construct
 
@@ -29,7 +30,7 @@ class DailymailStack(Stack):
                                                         sources=[aws_s3_deployment.Source.asset(path="resource")],
                                                         destination_bucket=bucket,
                                                         )
-
+        email_identity = aws_ses.EmailIdentity(self, "my_email", identity=aws_ses.Identity.email(email.value_as_string))
         scheduled_lambda.add_to_role_policy(iam.PolicyStatement(effect=iam.Effect.ALLOW,
                                                                 resources=[f"arn:aws:ses:eu-north-1:916886530732:identity/{email}"],
                                                                 actions=["ses:SendEmail", "ses:SendRawEmail",
@@ -38,8 +39,9 @@ class DailymailStack(Stack):
                                                                 ))
         principal = iam.ServicePrincipal("events.amazonaws.com")
         scheduled_lambda.grant_invoke(principal)
-
         rule = events.Rule(self, "Rule", schedule=events.Schedule.rate(Duration.hours(24)))
 
         rule.add_target(aws_events_targets.LambdaFunction(scheduled_lambda, event=events.RuleTargetInput.from_object(
             {"bucket": "testbucketcdk1241212", "address": email, "content": "email_content.txt"}), retry_attempts=1))
+
+
