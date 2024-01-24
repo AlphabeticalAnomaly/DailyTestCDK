@@ -20,7 +20,7 @@ jobs:
     - name: cdk deploy
       uses: youyo/aws-cdk-github-actions@v2
       with:
-        cdk_subcommand: 'diff'
+        cdk_subcommand: 'diff --app'
         actions_comment: true
 #      with:
 #        cdk_subcommand: 'deploy --app DailymailStack'
