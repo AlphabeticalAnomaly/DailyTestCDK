@@ -1,8 +1,8 @@
 name: Deploy aws stack on git push
 on:
   push:
-    branches:
-      - github_workflow
+    branches: [github_workflow]
+
 
 permissions:
   id-token: write
