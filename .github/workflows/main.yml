@@ -11,11 +11,11 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: AlphabeticalAnomaly/DailyTestCDK
-    - name: SetUp Node.js env
-      uses: actions/setup-node@v2
-      with:
-        node-version: 16
-        cache: nmp
+#    - name: SetUp Node.js env
+#      uses: actions/setup-node@v2
+#      with:
+#        node-version: 16
+#        cache: nmp
     - name: Install root dependencies
       run: nmp ci
     - name: Install dependencies
