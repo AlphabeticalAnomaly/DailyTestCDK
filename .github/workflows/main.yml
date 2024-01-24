@@ -1,0 +1,23 @@
+name: Deploy aws stack on git push
+on:
+  push:
+    branches: [master]
+
+jobs:
+  aws_cdk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: cdk deploy
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+            cdk_subcommand: 'deploy'
+            cdk_stack: 'DailymailStack'
+            cdk_args: '--require-approval never --parameters email=${{ secrets.AWS_EMAIL }}'
+            actions_comment: false
+            cdk_version: 2.114.1
+        env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: eu-north-1
