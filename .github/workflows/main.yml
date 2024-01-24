@@ -9,15 +9,15 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      - name: Clean global cache
-        run: npm cache clean --force
-      - name: Install dependencies
-        run: npm install
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-          cache: 'npm'
+#      - name: Clean global cache
+#        run: npm cache clean --force
+#      - name: Install dependencies
+#        run: npm install
+#      - name: Setup Node
+#        uses: actions/setup-node@v2
+#        with:
+#          node-version: '18'
+#          cache: 'npm'
       - name: cdk diff
         uses: youyo/aws-cdk-github-actions@v2
         with:
