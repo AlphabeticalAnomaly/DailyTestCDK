@@ -26,6 +26,7 @@ jobs:
     - name: Deploy Stack
       uses: youyo/aws-cdk-github-actions@v2
       with:
+         run: pip install -U pip setuptools
          cdk_subcommand: 'deploy'
          cdk_stack: 'app.py'
          cdk_args: '--require-approval never'
