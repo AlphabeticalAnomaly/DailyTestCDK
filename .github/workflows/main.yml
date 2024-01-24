@@ -20,7 +20,7 @@ jobs:
     - name: cdk deploy
       uses: youyo/aws-cdk-github-actions@v2
       with:
-        cdk_subcommand: 'diff --app DailymailStack'
+        cdk_subcommand: 'deploy --app "app.py" --parameters email= ${{ secrets.AWS_EMAIL }}'
         actions_comment: true
 #      with:
 #        cdk_subcommand: 'deploy --app DailymailStack'
@@ -48,11 +48,11 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Deployment
-      id: cdk-deploy
-      run:
-        cdk deploy --parameters email= ${{ secrets.AWS_EMAIL }}
-        y
+#    - name: Deployment
+#      id: cdk-deploy
+#      run:
+#        cdk deploy
+
 
 
 
