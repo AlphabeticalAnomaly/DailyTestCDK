@@ -23,10 +23,10 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-north-1
 
-    - name: Deploy LambdaStack (via CDK)
+    - name: Deploy Stack
       uses: youyo/aws-cdk-github-actions@v2
       with:
          cdk_subcommand: 'deploy'
-         cdk_stack: './dailymail/dailymail_stack.py'
+         cdk_stack: 'app.py'
          cdk_args: '--require-approval never'
          actions_comment: false
