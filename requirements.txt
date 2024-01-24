@@ -1,11 +1,11 @@
-aws-cdk-lib==2.13.0
+aws-cdk-lib==2.14.0
 constructs>=10.0.0,<11.0.0
 pip~=19.2.3
 attrs~=23.1.0
-setuptools~=69.0.3
+setuptools
 boto3~=1.33.11
 aws-cdk.aws_ses
-
+dependency-injector
 
 
 
