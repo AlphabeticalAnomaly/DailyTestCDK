@@ -14,7 +14,7 @@ jobs:
         with:
             cdk_subcommand: 'deploy'
             cdk_stack: 'DailymailStack'
-            cdk_args: '--require-approval never --parameters email="${{ secrets.AWS_EMAIL }}"'
+            cdk_args: '--require-approval never --parameters email=${{ secrets.AWS_EMAIL }}'
             actions_comment: false
             cdk_version: 2.114.1
         env:
