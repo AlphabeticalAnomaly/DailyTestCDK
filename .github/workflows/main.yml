@@ -1,7 +1,7 @@
 name: Deploy aws stack on git push
 on:
   push:
-    branches: [github_workflow]
+    branches: [master]
 
 jobs:
   aws_cdk:
