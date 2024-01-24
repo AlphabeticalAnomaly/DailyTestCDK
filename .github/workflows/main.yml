@@ -9,30 +9,11 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      - name: Clean global cache
-        run: npm cache clean --force
-      - name: Install dependencies
-        run: npm install
-        uses: ./package-lock.json
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-          cache: 'npm'
-      - name: cdk diff
-        uses: youyo/aws-cdk-github-actions@v2
-        with:
-          cdk_subcommand: 'diff'
-          actions_comment: true
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          GITHUB_TOKEN: ${{ secrets.SECRET_GITHUB_TOKEN }}
       - name: cdk deploy
         uses: youyo/aws-cdk-github-actions@v2
         with:
             cdk_subcommand: 'deploy'
-            cdk_stack: 'dailymail_stack'
+            cdk_stack: 'DailymailStack'
             cdk_args: '--require-approval never'
             actions_comment: false
         env:
