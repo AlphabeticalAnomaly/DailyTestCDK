@@ -5,7 +5,7 @@ on:
     types:
       - completed
   push:
-    branches: [master]
+    branches: [github_workflow_tests]
 jobs:
   aws_cdk:
     runs-on: ubuntu-latest
