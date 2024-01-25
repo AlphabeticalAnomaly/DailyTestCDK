@@ -1,5 +1,10 @@
 name: Deploy aws stack on git push
 on:
+  workflow-run:
+    workflows: [ run_tests ]
+    types:
+      - completed
+
   push:
     branches: [github_workflow_tests]
 
