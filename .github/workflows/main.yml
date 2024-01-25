@@ -12,7 +12,7 @@ jobs:
       - name: requirements
         run: pip install -r requirements.txt
       - name: lambda_tests
-        run:  python3 -m unittest tests/lambda_tests/test_decode.py tests/lambda_tests/test_mail.py
+        run:  python3 -m unittest tests/lambda_tests/test_decode.py tests/lambda_tests/test_mail.py unittest src/test_handler.py
   aws_cdk:
     needs: tests
     runs-on: ubuntu-latest
@@ -31,4 +31,3 @@ jobs:
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             AWS_DEFAULT_REGION: eu-north-1
-
