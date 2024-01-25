@@ -12,7 +12,11 @@ jobs:
       - name: requirements
         run: pip install -r requirements.txt
       - name: lambda_tests
-        run:  python3 -m unittest tests/lambda_tests/test_decode.py tests/lambda_tests/test_mail.py unittest src/test_handler.py
+        run:  python3 -m unittest tests/lambda_tests/test_decode.py tests/lambda_tests/test_mail.py
+      - name: Test handler
+        run: python3 -m unittest test_handler.TestHandler
+        with:
+          working-directory: src/
   aws_cdk:
     needs: tests
     runs-on: ubuntu-latest
