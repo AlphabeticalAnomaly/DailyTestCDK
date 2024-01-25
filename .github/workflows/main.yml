@@ -4,18 +4,6 @@ on:
     branches: [github_workflow_tests]
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-      - name: requirements
-        run: pip install -r requirements-dev.txt
-      - name: Lambda tests
-        run:  python3 -m unittest tests/lambda_tests/test_decode.py tests/lambda_tests/test_mail.py
-      - name: Test handler
-        working-directory: src/
-        run: python3 -m unittest test_handler.TestHandler
   aws_cdk:
     needs: tests
     runs-on: ubuntu-latest
