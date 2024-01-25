@@ -1,10 +1,16 @@
 name: Deploy aws stack on git push
 on:
   push:
-    branches: [master]
+    branches: [github_workflow_tests]
 
 jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      name: lambda_tests
+      run:  python3 -m unittest tests/lambda_tests/test_decode.py tests/lambda_tests/test_mail.py
   aws_cdk:
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
