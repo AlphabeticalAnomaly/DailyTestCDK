@@ -1,9 +1,9 @@
 name: Run tests for the CDK Stack
 on:
   pull_request:
-    branches: [master]
+    branches: [github_workflow_tests]
   push:
-    branches: [master]
+    branches: [github_workflow_tests]
 
 jobs:
   tests:
