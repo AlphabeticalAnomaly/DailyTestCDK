@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+      - name: cdk deploy
+        uses: youyo/aws-cdk-github-actions@v2
       - name: lambda_tests
         run:  python3 -m unittest tests/lambda_tests/test_decode.py tests/lambda_tests/test_mail.py
   aws_cdk:
@@ -17,8 +19,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      - name: cdk deploy
-        uses: youyo/aws-cdk-github-actions@v2
         with:
             cdk_subcommand: 'deploy'
             cdk_stack: 'DailymailStack'
