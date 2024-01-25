@@ -8,7 +8,6 @@ on:
     branches: [github_workflow_tests]
 jobs:
   aws_cdk:
-    needs: tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
