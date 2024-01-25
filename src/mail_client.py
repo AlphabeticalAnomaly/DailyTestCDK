@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-import boto3.session
 import boto3
 
 
