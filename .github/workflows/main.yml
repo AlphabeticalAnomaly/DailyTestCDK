@@ -17,8 +17,8 @@ jobs:
     needs: tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+#      - name: Checkout repo
+#        uses: actions/checkout@v3
       - name: cdk deploy
         uses: youyo/aws-cdk-github-actions@v2
         with:
