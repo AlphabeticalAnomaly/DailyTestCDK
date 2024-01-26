@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import Mock
-from src.lambda_function import lambda_handler
+from lambda_function import lambda_handler
 
 
 class TestHandler(unittest.TestCase):

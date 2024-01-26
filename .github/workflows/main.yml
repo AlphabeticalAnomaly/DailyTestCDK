@@ -1,8 +1,11 @@
 name: Deploy aws stack on git push
 on:
+  workflow_run:
+    workflows: [ run_tests ]
+    types:
+      - completed
   push:
     branches: [master]
-
 jobs:
   aws_cdk:
     runs-on: ubuntu-latest
