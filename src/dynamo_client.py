@@ -26,4 +26,3 @@ class DynamoClient(IDynamoClient):
         except Exception as e:
             raise DynamoClientError(message="An error has occurred when trying to access the database.", cause=e)
 
-

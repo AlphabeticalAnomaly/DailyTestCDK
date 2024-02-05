@@ -20,4 +20,3 @@ class TestDynamoClient(unittest.TestCase):
         with self.assertRaises(DynamoClientError) as context:
             self.dynamo.dynamo_put_item(self.item)
         self.assertEqual("An error has occurred when trying to access the database.", context.exception.message)
-            
