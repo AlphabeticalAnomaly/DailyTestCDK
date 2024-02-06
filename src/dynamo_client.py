@@ -1,5 +1,6 @@
 import boto3
 from abc import ABC, abstractmethod
+import os
 
 
 class DynamoClientError(Exception):
@@ -15,7 +16,7 @@ class IDynamoClient(ABC):
 
 
 class DynamoClient(IDynamoClient):
-    def __init__(self, resource=boto3.resource('dynamodb', 'eu-north-1'), table=str):
+    def __init__(self, resource=boto3.resource('dynamodb', str(os.environ.get('AWS_REGION'))), table=str):
         self.dynamodb = resource
         self.table = self.dynamodb.Table(table)
 
@@ -23,6 +24,6 @@ class DynamoClient(IDynamoClient):
         try:
             self.table.put_item(Item=item)
         except Exception as e:
-            raise DynamoClientError(message="An error has occurred", cause=e)
+            raise DynamoClientError(message="An error has occurred when trying to access the database.", cause=e)
 
 

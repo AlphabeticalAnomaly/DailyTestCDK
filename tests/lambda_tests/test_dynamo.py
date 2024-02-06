@@ -19,5 +19,5 @@ class TestDynamoClient(unittest.TestCase):
         self.dynamo.table.put_item.side_effect = expected_exception
         with self.assertRaises(DynamoClientError) as context:
             self.dynamo.dynamo_put_item(self.item)
-        self.assertEqual("An error has occurred", context.exception.message)
+        self.assertEqual("An error has occurred when trying to access the database.", context.exception.message)
             
