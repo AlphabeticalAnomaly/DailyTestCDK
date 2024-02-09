@@ -14,7 +14,7 @@ jobs:
       - name: install dependencies
         run: pip install -r requirements-dev.txt
       - name: Lambda tests
-        run: python3 -m unittest tests/lambda_tests/test_decode.py tests/lambda_tests/test_mail.py
+        run: python3 -m unittest tests/lambda_tests/*.py
       - name: Test handler
         working-directory: src/
         run: python3 -m unittest test_handler.TestHandler

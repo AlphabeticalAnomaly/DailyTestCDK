@@ -10,6 +10,7 @@ from aws_cdk import (
     aws_s3_deployment,
     CfnParameter,
     aws_ses,
+    aws_dynamodb
 )
 from constructs import Construct
 
@@ -37,11 +38,27 @@ class DailymailStack(Stack):
                                                                          "ses:SendTemplatedEmail",
                                                                          ]
                                                                 ))
+        table = aws_dynamodb.TableV2(self, "Table", partition_key=aws_dynamodb.Attribute(name="email", type=aws_dynamodb.AttributeType.STRING),
+                                     sort_key=aws_dynamodb.Attribute(name="date", type=aws_dynamodb.AttributeType.STRING),
+                                     contributor_insights=True,
+                                     table_class=aws_dynamodb.TableClass.STANDARD_INFREQUENT_ACCESS,
+                                     point_in_time_recovery=True,
+                                     table_name="DailyTable01",
+                                     )
+        scheduled_lambda.add_to_role_policy(iam.PolicyStatement(effect=iam.Effect.ALLOW,
+                                                                resources=[table.table_arn],
+                                                                actions=["dynamodb:BatchGetItem",
+                                                                         "dynamodb:BatchWriteItem",
+                                                                         "dynamodb:DeleteItem",
+                                                                         "dynamodb:GetItem",
+                                                                         "dynamodb:PutItem",
+                                                                         "dynamodb:Query",
+                                                                         "dynamodb:UpdateItem"
+                                                                         ]
+                                                                ))
         principal = iam.ServicePrincipal("events.amazonaws.com")
         scheduled_lambda.grant_invoke(principal)
         rule = events.Rule(self, "Rule", schedule=events.Schedule.rate(Duration.hours(24)))
 
         rule.add_target(aws_events_targets.LambdaFunction(scheduled_lambda, event=events.RuleTargetInput.from_object(
             {"bucket": "testbucketcdk1241212", "address": email, "content": "email_content.txt"}), retry_attempts=1))
-
-
