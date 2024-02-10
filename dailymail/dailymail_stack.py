@@ -10,7 +10,8 @@ from aws_cdk import (
     aws_s3_deployment,
     CfnParameter,
     aws_ses,
-    aws_dynamodb
+    aws_dynamodb,
+    aws_apigateway
 )
 from constructs import Construct
 
@@ -43,7 +44,7 @@ class DailymailStack(Stack):
                                      contributor_insights=True,
                                      table_class=aws_dynamodb.TableClass.STANDARD_INFREQUENT_ACCESS,
                                      point_in_time_recovery=True,
-                                     table_name="DailyTable01",
+                                     table_name="DailyTable",
                                      )
         scheduled_lambda.add_to_role_policy(iam.PolicyStatement(effect=iam.Effect.ALLOW,
                                                                 resources=[table.table_arn],
@@ -61,4 +62,12 @@ class DailymailStack(Stack):
         rule = events.Rule(self, "Rule", schedule=events.Schedule.rate(Duration.hours(24)))
 
         rule.add_target(aws_events_targets.LambdaFunction(scheduled_lambda, event=events.RuleTargetInput.from_object(
-            {"bucket": "testbucketcdk1241212", "address": email, "content": "email_content.txt"}), retry_attempts=1))
+            {"bucket": "testbucketcdk1241210", "address": email, "content": "email_content.txt"}), retry_attempts=1))
+
+        api = aws_apigateway.LambdaRestApi(self, "DailyApi", rest_api_name="DailyApi01", handler=scheduled_lambda)
+        mail_resource = api.root.add_resource("mail")
+        mail_resource.add_method("POST")
+        deployment = aws_apigateway.Deployment(self, "Deployment", api=api)
+        api_principal = iam.ServicePrincipal("apigateway.amazonaws.com")
+        scheduled_lambda.grant_invoke(api_principal)
+        
