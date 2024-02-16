@@ -59,14 +59,14 @@ class DailymailStack(Stack):
                                                                          "dynamodb:UpdateItem"
                                                                          ]
                                                                 ))
+        api = aws_apigateway.LambdaRestApi(self, "DailyApi", rest_api_name="DailyRestApi", handler=scheduled_lambda,
+                                           proxy=False)
+        root_resource = api.root
+        root_resource.add_method("ANY")
         principal = iam.ServicePrincipal("events.amazonaws.com")
         scheduled_lambda.grant_invoke(principal)
         rule = events.Rule(self, "Rule", schedule=events.Schedule.rate(Duration.hours(24)))
+        rule.add_target(aws_events_targets.ApiGateway(rest_api=api, stage="prod", method="POST",
+                                                      post_body=events.RuleTargetInput.from_object({"bucket": "testbucketcdk1241210", "address": email, "content": "email_content.txt"}), retry_attempts=1))
 
-        rule.add_target(aws_events_targets.LambdaFunction(scheduled_lambda, event=events.RuleTargetInput.from_object(
-            {"bucket": "testbucketcdk1241210", "address": email, "content": "email_content.txt"}), retry_attempts=1))
-
-        api = aws_apigateway.LambdaRestApi(self, "DailyApi", rest_api_name="DailyRestApi", handler=scheduled_lambda, proxy=False)
-        root_resource = api.root
-        root_resource.add_method("ANY")
 
