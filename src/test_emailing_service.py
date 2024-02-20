@@ -11,11 +11,11 @@ class TestEmailingService(unittest.TestCase):
         self.reader = Mock()
         self.mailer = Mock()
         self.dynamo = Mock()
-        self.email_service = EmailingService(data=self.data, reader=self.reader, mailer=self.mailer, dynamo=self.dynamo)
+        self.email_service = EmailingService(reader=self.reader, mailer=self.mailer, dynamo=self.dynamo)
 
     def test_send_email(self):
 
-        self.email_service.send_email()
+        self.email_service.send_email(bucket=self.data["bucket"], address=self.data["address"], content=self.data["content"])
         self.email_service.reader.read_object_content.assert_called_with(bucket="test_bucket", object_key="test_content")
         self.email_service.dynamo.dynamo_put_item.assert_called_with(item={"email": "test_address",
                                                                            "date": self.current_date,

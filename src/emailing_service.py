@@ -7,22 +7,19 @@ from abc import ABC, abstractmethod
 
 class ISendEmail(ABC):
     @abstractmethod
-    def send_email(self):
+    def send_email(self, bucket, content, address):
         pass
 
 
 class EmailingService(ISendEmail):
-    def __init__(self, data=dict, reader=BucketReader(), mailer=MailService(), dynamo=DynamoClient(table="DailyTable")):
+    def __init__(self, reader=BucketReader(), mailer=MailService(), dynamo=DynamoClient(table="DailyTable")):
         self.reader = reader
         self.mailer = mailer
         self.dynamo = dynamo
-        self.bucket = data["bucket"]
-        self.address = data["address"]
-        self.content = data["content"]
         self.current_date = datetime.today().strftime('%Y.%m.%d.%H.%M.%S')
         self.content_str = str
 
-    def send_email(self):
-        self.content_str = self.reader.read_object_content(bucket=self.bucket, object_key=self.content)
-        self.dynamo.dynamo_put_item(item={"email": self.address, "date": self.current_date, "content": self.content})
-        self.mailer.send_email(source_address=self.address, destination_address=self.address, content=self.content_str)
+    def send_email(self, bucket, content, address):
+        self.content_str = self.reader.read_object_content(bucket=bucket, object_key=content)
+        self.dynamo.dynamo_put_item(item={"email": address, "date": self.current_date, "content": content})
+        self.mailer.send_email(source_address=address, destination_address=address, content=self.content_str)

@@ -2,6 +2,7 @@ from lambda_function import lambda_handler
 import awsgi
 import unittest
 from unittest.mock import Mock
+import json
 
 
 class TestHandler(unittest.TestCase):
