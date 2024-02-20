@@ -16,7 +16,6 @@ from aws_cdk import (
 from constructs import Construct
 
 
-
 class DailymailStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
@@ -66,7 +65,12 @@ class DailymailStack(Stack):
         principal = iam.ServicePrincipal("events.amazonaws.com")
         scheduled_lambda.grant_invoke(principal)
         rule = events.Rule(self, "Rule", schedule=events.Schedule.rate(Duration.hours(24)))
-        rule.add_target(aws_events_targets.ApiGateway(rest_api=api, stage="prod", method="POST",
-                                                      post_body=events.RuleTargetInput.from_object({"bucket": "testbucketcdk1241210", "address": email, "content": "email_content.txt"}), retry_attempts=1))
+        rule.add_target(aws_events_targets.ApiGateway(rest_api=api,
+                                                      stage="prod",
+                                                      method="POST",
+                                                      post_body=events.RuleTargetInput.from_object({"bucket": "testbucketcdk1241210",
+                                                                                                    "address": email,
+                                                                                                    "content": "email_content.txt"}),
+                                                      retry_attempts=1))
 
 

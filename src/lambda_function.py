@@ -1,16 +1,16 @@
 from flask import Flask, request, jsonify
 import awsgi
 import json
-from app_task import send_email
+from emailing_service import EmailingService
 
 
 app = Flask("DailymailStack")
 
 
 @app.route('/', methods=['POST'])
-def task():
+def send_email():
     data = json.loads(request.get_data().decode('utf-8'))
-    send_email(data=data)
+    EmailingService(data=data).send_email()
     return jsonify(status=200, message="Email sent")
 
 

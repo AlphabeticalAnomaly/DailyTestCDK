@@ -17,6 +17,6 @@ jobs:
         run: python3 -m unittest tests/lambda_tests/*.py
       - name: Test handler
         working-directory: src/
-        run: python3 -m unittest test_handler.TestHandler
+        run: python3 -m unittest test_handler.TestHandler test_email_service.TestEmailingService
       - name: Test Cdk Synth
         run: python3 -m unittest tests/cdk_tests/test_dailymail_stack.py
