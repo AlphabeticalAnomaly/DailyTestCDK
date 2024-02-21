@@ -1,11 +1,30 @@
-from decode_function import BucketReader
-from mail_client import MailService
-from dynamo_client import DynamoClient
-from datetime import datetime
+from flask import Flask, request, jsonify
+import awsgi
+import json
+from emailing_service import EmailingService
+
+BUCKET_KEY = "bucket"
+ADDRESS_KEY = "address"
+CONTENT_KEY = "content"
+KEY_LIST = [BUCKET_KEY, ADDRESS_KEY, CONTENT_KEY]
+
+app = Flask("DailymailStack")
+email_service = EmailingService()
 
 
-def lambda_handler(event, context, reader=BucketReader(), mailer=MailService(), dynamo=DynamoClient(table="DailyTable01")):
-    current_date = datetime.today().strftime('%Y.%m.%d.%H.%M.%S')
-    content_str = reader.read_object_content(bucket=event["bucket"], object_key=event["content"])
-    mailer.send_email(source_address=event["address"], destination_address=event["address"], content=content_str)
-    dynamo.dynamo_put_item(item={"email": event["address"], "date": current_date, "content": event["content"]})
+@app.route('/', methods=['POST'])
+def send_email():
+    data = json.loads(request.get_data().decode('utf-8'))
+    keysNotFound = [key for key in KEY_LIST if key not in data]
+    if keysNotFound != 0:
+        return jsonify(status=400, message=f"The following keys: {keysNotFound}, were not found in the request")
+    else:
+        email_service.send_email(bucket=data[BUCKET_KEY], content=data[CONTENT_KEY], address=data[ADDRESS_KEY])
+        return jsonify(status=200, message="Email sent!y")
+
+
+def lambda_handler(event, context):
+    try:
+        return awsgi.response(app, event, context)
+    except Exception as e:
+        return jsonify(status=500, message="The server encountered an error.")

@@ -1,18 +1,24 @@
-import unittest
-from unittest.mock import Mock
 from lambda_function import lambda_handler
-from datetime import datetime
+import awsgi
+import unittest
+from unittest.mock import Mock, patch
 
 
 class TestHandler(unittest.TestCase):
-    def test_handler(self):
-        event = {"bucket": "test_bucket", "content": "test_content", "address": "test_address"}
-        context = Mock()
-        reader = Mock()
-        mailer = Mock()
-        dynamo = Mock()
-        current_date = datetime.today().strftime('%Y.%m.%d.%H.%M.%S')
-        handler = lambda_handler(event=event, context=context, reader=reader, mailer=mailer, dynamo=dynamo)
-        reader.read_object_content.assert_called_with(bucket=event["bucket"], object_key=event["content"])
-        mailer.send_email.assert_called_with(source_address=event["address"], destination_address=event["address"], content=reader.read_object_content.return_value)
-        dynamo.dynamo_put_item.assert_called_with(item={"email": event["address"], "date": current_date, "content": event["content"]})
+
+    def setUp(self):
+        self.event = Mock()
+        self.context = Mock()
+
+    def test_lambda_handler(self):
+        awsgi.response = Mock()
+        response = lambda_handler(event=self.event, context=self.context)
+        assert response == awsgi.response.return_value
+
+    @patch("lambda_function.jsonify")
+    def test_lambda_handler_exception(self, mock):
+        awsgi.response = Mock()
+        awsgi.response.side_effect = Exception
+        response = lambda_handler(event=self.event, context=self.context)
+        mock.assert_called_with(status=500, message="The server encountered an error.")
+

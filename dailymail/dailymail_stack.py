@@ -10,7 +10,8 @@ from aws_cdk import (
     aws_s3_deployment,
     CfnParameter,
     aws_ses,
-    aws_dynamodb
+    aws_dynamodb,
+    aws_apigateway,
 )
 from constructs import Construct
 
@@ -24,6 +25,7 @@ class DailymailStack(Stack):
                                             handler='lambda_function.lambda_handler',
                                             runtime=lambda_.Runtime.PYTHON_3_8,
                                             code=lambda_.Code.from_asset(path="src"),
+                                            layers=[lambda_.LayerVersion(self, "MyLayer", code=lambda_.Code.from_asset(path="layer.zip"))],
                                             )
         bucket = aws_s3.Bucket(self, "TestBucket", bucket_name="testbucketcdk1241210",)
         bucket.grant_read(scheduled_lambda)
@@ -43,7 +45,7 @@ class DailymailStack(Stack):
                                      contributor_insights=True,
                                      table_class=aws_dynamodb.TableClass.STANDARD_INFREQUENT_ACCESS,
                                      point_in_time_recovery=True,
-                                     table_name="DailyTable01",
+                                     table_name="DailyTable",
                                      )
         scheduled_lambda.add_to_role_policy(iam.PolicyStatement(effect=iam.Effect.ALLOW,
                                                                 resources=[table.table_arn],
@@ -56,9 +58,19 @@ class DailymailStack(Stack):
                                                                          "dynamodb:UpdateItem"
                                                                          ]
                                                                 ))
+        api = aws_apigateway.LambdaRestApi(self, "DailyApi", rest_api_name="DailyRestApi", handler=scheduled_lambda,
+                                           proxy=False)
+        root_resource = api.root
+        root_resource.add_method("ANY")
         principal = iam.ServicePrincipal("events.amazonaws.com")
         scheduled_lambda.grant_invoke(principal)
         rule = events.Rule(self, "Rule", schedule=events.Schedule.rate(Duration.hours(24)))
+        rule.add_target(aws_events_targets.ApiGateway(rest_api=api,
+                                                      stage="prod",
+                                                      method="POST",
+                                                      post_body=events.RuleTargetInput.from_object({"bucket": "testbucketcdk1241210",
+                                                                                                    "address": email,
+                                                                                                    "content": "email_content.txt"}),
+                                                      retry_attempts=1))
 
-        rule.add_target(aws_events_targets.LambdaFunction(scheduled_lambda, event=events.RuleTargetInput.from_object(
-            {"bucket": "testbucketcdk1241212", "address": email, "content": "email_content.txt"}), retry_attempts=1))
+
