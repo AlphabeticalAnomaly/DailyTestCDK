@@ -22,6 +22,7 @@ def send_email():
         email_service.send_email(bucket=data[BUCKET_KEY], content=data[CONTENT_KEY], address=data[ADDRESS_KEY])
         return jsonify(status=200, message="Email sent!y")
 
+
 def lambda_handler(event, context):
     try:
         return awsgi.response(app, event, context)

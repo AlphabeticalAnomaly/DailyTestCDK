@@ -1,2 +1,4 @@
 boto3
 aws-cdk-lib==2.112.0
+Flask~=3.0.2
+aws-wsgi~=0.2.7
